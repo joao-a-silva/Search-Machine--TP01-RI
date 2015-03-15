@@ -4,19 +4,14 @@
  * and open the template in the editor.
  */
 
-package tp01;
+package PreProcessing;
 
 /**
  *
  * @author joao
  */
-public class TP01 {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public class PreProcessing {
+    
+    
     
 }
