@@ -34,9 +34,9 @@ public class ReadFiles {
                 listFiles.add(f.getAbsolutePath());
             }
         }
-        for (String f : listFiles) {
-            System.out.println(f);            
-        }
+//        for (String f : listFiles) {
+//            System.out.println(f);            
+//        }
         
         return listFiles;
 
@@ -62,4 +62,29 @@ public class ReadFiles {
         return out;
     }
 
+    public ArrayList<String> listSopWords(String path) throws FileNotFoundException {
+        ArrayList<String> stop = new ArrayList<>();
+        StringBuilder out = new StringBuilder();
+
+        try {
+            FileReader arq = new FileReader(path);
+            BufferedReader lerArq = new BufferedReader(arq);
+            String linha = lerArq.readLine();
+            while (linha != null) {
+                out.append(linha).append("\n");
+                linha = lerArq.readLine();
+            }
+            
+            arq.close();
+        } catch (IOException e) {
+             System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
+        }
+
+
+        
+        return stop;
+
+    }
+    
+    
 }

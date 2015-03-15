@@ -13,7 +13,17 @@ package Indexing;
 public class Documents {
     
     private String name;
-    private int frequency;
+    private int freq;
+    private double TF;
+    private double IDF;
+
+    public int getFreq() {
+        return freq;
+    }
+
+    public void setFreq(int freq) {
+        this.freq = freq;
+    }    
 
     public String getName() {
         return name;
@@ -23,13 +33,23 @@ public class Documents {
         this.name = name;
     }
 
-    public int getFrequency() {
-        return frequency;
+    public double getTF() {
+        return TF;
     }
 
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
+    public void setTF(double TF) {
+        this.TF = TF;
     }
+
+    public double getIDF() {
+        return IDF;
+    }
+
+    public void setIDF(double IDF) {
+        this.IDF = IDF;
+    }
+
+    
     
     
     
