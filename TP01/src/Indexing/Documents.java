@@ -12,10 +12,13 @@ package Indexing;
  */
 public class Documents {
     
-    private String name;
     private int freq;
     private double TF;
     private double IDF;
+
+    Documents(int i) {
+       this.freq = i;
+    }
 
     public int getFreq() {
         return freq;
@@ -24,14 +27,6 @@ public class Documents {
     public void setFreq(int freq) {
         this.freq = freq;
     }    
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public double getTF() {
         return TF;

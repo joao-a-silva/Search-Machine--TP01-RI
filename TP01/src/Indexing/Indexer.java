@@ -21,12 +21,13 @@ import jdk.nashorn.internal.parser.Token;
  */
 public class Indexer {
 
-    HashMap<String, HashMap<String, Integer>> index = new HashMap<>();
+    HashMap<String, HashMap<String, Documents>> index = new HashMap<>();
+    int totalDocs = 0;
 
     public void indexing(String path) throws FileNotFoundException {
 
         ReadFiles files = new ReadFiles();
-        int numDoc = 0;
+
         for (String s : files.listFiles(path)) {
             System.out.println("Processing File: " + s);
 
@@ -37,23 +38,23 @@ public class Indexer {
             while (terms.hasMoreTokens()) {
 
                 String term = this.preProcessing(terms.nextToken());
-                String nameDoc = "doc" + numDoc;
+                String nameDoc = "doc" + totalDocs;
 
                 if (!index.containsKey(term)) {
-                    HashMap<String, Integer> docs = new HashMap<>();
-                    docs.put(nameDoc, 1);
+                    HashMap<String, Documents> docs = new HashMap<>();
+                    docs.put(nameDoc, new Documents(1));
                     index.put(term, docs);
                 } else {
                     if (index.get(term).containsKey(nameDoc)) {
-                        int numOcorr = index.get(term).get(nameDoc) + 1;
-                        index.get(term).put(nameDoc, numOcorr);
+                        int numOcorr = index.get(term).get(nameDoc).getFreq() + 1;
+                        index.get(term).put(nameDoc, new Documents(numOcorr));
                     } else {
-                        index.get(term).put(nameDoc, 1);
+                        index.get(term).put(nameDoc, new Documents(1));
                     }
                 }
             }
 
-            numDoc += 1;
+            totalDocs += 1;
 
         }
         System.out.println("" + GeraWeights());
@@ -64,11 +65,23 @@ public class Indexer {
         Set<String> keys = index.keySet();
 
         for (String key : keys) {
+
             if (key != null) {
                 Set<String> keyDocs = index.get(key).keySet();
+                System.out.print(key+ "-");
+                int numDocsOcorr = index.get(key).size();
+                System.out.println(numDocsOcorr);
                 for (String doc : keyDocs) {
                     if (doc != null) {
-                        System.out.println(index.get(key).get(doc));
+                        int freq = index.get(key).get(doc).getFreq();
+                        double tf = this.getTF(freq);
+                        double idf =this.getIDF(numDocsOcorr);
+                        double tfidf = this.getTFIDF(freq, tf, idf);
+                        index.get(key).get(doc).setTF(tf);
+                        index.get(key).get(doc).setIDF(idf);
+                        System.out.println("Freq= "+ freq + "; TF = "+ index.get(key).get(doc).getTF()+"; ITF = "+
+                                index.get(key).get(doc).getIDF()+"; TFIDF = "+ tfidf );                    
+
                     }
                 }
             }
@@ -86,10 +99,22 @@ public class Indexer {
 
     public double getTF(int freq) {
 
-        return 0.0;
+        if (freq > 0) {
+            return 1 + Math.log(freq) / Math.log(2);
+        } else {
+            return 0.0;
+        }
     }
 
-    public double getITF(int freq, int numDocs) {
-        return 0.0;
+    public double getIDF(int numDocsOcorr) {        
+        return Math.log((double)totalDocs /(double) numDocsOcorr) / Math.log(2);     
+        
+    }
+
+    private double getTFIDF(int freq, double tf, double idf) {
+       if (freq > 0)
+           return tf * idf;
+       else
+           return 0.0;
     }
 }
