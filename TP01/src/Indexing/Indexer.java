@@ -31,15 +31,15 @@ public class Indexer {
         for (String s : files.listFiles(path)) {
             System.out.println("Processing File: " + s);
 
-            String contentFile = this.preProcessing(files.getContentFile(s).toString());
+            String contentFile = files.getContentFile(s).toString();
 
             StringTokenizer terms = new StringTokenizer(contentFile);
 
             while (terms.hasMoreTokens()) {
 
-                String term = this.preProcessing(terms.nextToken());
+                String term = terms.nextToken();
                 String nameDoc = "doc" + totalDocs;
-
+           
                 if (!index.containsKey(term)) {
                     HashMap<String, Documents> docs = new HashMap<>();
                     docs.put(nameDoc, new Documents(1));
@@ -68,9 +68,9 @@ public class Indexer {
 
             if (key != null) {
                 Set<String> keyDocs = index.get(key).keySet();
-                System.out.print(key+ "-");
+//                System.out.print(key+ "-");
                 int numDocsOcorr = index.get(key).size();
-                System.out.println(numDocsOcorr);
+//                System.out.println(numDocsOcorr);
                 for (String doc : keyDocs) {
                     if (doc != null) {
                         int freq = index.get(key).get(doc).getFreq();
@@ -79,8 +79,8 @@ public class Indexer {
                         double tfidf = this.getTFIDF(freq, tf, idf);
                         index.get(key).get(doc).setTF(tf);
                         index.get(key).get(doc).setIDF(idf);
-                        System.out.println("Freq= "+ freq + "; TF = "+ index.get(key).get(doc).getTF()+"; ITF = "+
-                                index.get(key).get(doc).getIDF()+"; TFIDF = "+ tfidf );                    
+//                        System.out.println("Freq= "+ freq + "; TF = "+ index.get(key).get(doc).getTF()+"; ITF = "+
+//                                index.get(key).get(doc).getIDF()+"; TFIDF = "+ tfidf );                    
 
                     }
                 }
@@ -90,25 +90,18 @@ public class Indexer {
         return null;
     }
 
-    public String preProcessing(String s) {
-        String out = s.replaceAll("\\.", "");
-        return out.replaceAll("\\,", "").toLowerCase();
-
-        //return Normalizer.normalize(s, Normalizer.Form.NFKD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase();
-    }
-
+    
     public double getTF(int freq) {
 
         if (freq > 0) {
-            return 1 + Math.log(freq) / Math.log(2);
+            return 1 + Math.log((double)freq) / Math.log(2.0);
         } else {
             return 0.0;
         }
     }
 
     public double getIDF(int numDocsOcorr) {        
-        return Math.log((double)totalDocs /(double) numDocsOcorr) / Math.log(2);     
-        
+        return Math.log((double)totalDocs /(double) numDocsOcorr) / Math.log(2.0);             
     }
 
     private double getTFIDF(int freq, double tf, double idf) {

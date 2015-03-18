@@ -5,14 +5,14 @@
  */
 package PreProcessing;
 
-import java.awt.List;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
 
 /**
  *
@@ -34,10 +34,6 @@ public class ReadFiles {
                 listFiles.add(f.getAbsolutePath());
             }
         }
-//        for (String f : listFiles) {
-//            System.out.println(f);            
-//        }
-        
         return listFiles;
 
     }
@@ -53,38 +49,28 @@ public class ReadFiles {
                 out.append(linha).append("\n");
                 linha = lerArq.readLine();
             }
-            
+
             arq.close();
         } catch (IOException e) {
-             System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
+            System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
         }
 
         return out;
     }
 
-    public ArrayList<String> listSopWords(String path) throws FileNotFoundException {
-        ArrayList<String> stop = new ArrayList<>();
-        StringBuilder out = new StringBuilder();
+    public void writeFile(String path, String out) throws IOException {
 
-        try {
-            FileReader arq = new FileReader(path);
-            BufferedReader lerArq = new BufferedReader(arq);
-            String linha = lerArq.readLine();
-            while (linha != null) {
-                out.append(linha).append("\n");
-                linha = lerArq.readLine();
-            }
-            
-            arq.close();
-        } catch (IOException e) {
-             System.err.printf("Erro na abertura do arquivo: %s.\n", e.getMessage());
-        }
+        File arquivo = new File(path);
+        //escreve no arquivo
+        FileWriter fw = new FileWriter(arquivo, true);
+        BufferedWriter bw = new BufferedWriter(fw);
 
+        bw.write(out);
+        bw.newLine();
 
-        
-        return stop;
-
+        bw.close();
+        fw.close();
     }
-    
+
     
 }
