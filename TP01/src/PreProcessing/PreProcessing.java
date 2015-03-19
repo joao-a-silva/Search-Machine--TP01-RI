@@ -18,50 +18,45 @@ import java.text.Normalizer;
  */
 public class PreProcessing {
 
-    String content;
-    int numDocs = 0;
+    String content, titleDoc;
 
     public void preProcessing(String path) throws FileNotFoundException, IOException {
-
         ReadFiles files = new ReadFiles();
         StringBuilder out = new StringBuilder();
 
         for (String file : files.listFiles(path)) {
-            numDocs++;
+            titleDoc = files.pathToTitle(file);
+            //read content file
             content = files.getContentFile(file).toString().toLowerCase();
-            //read stop words and replace then; 
-            removeStopWords();
             //remove special characters
             removeSpecialCharacters();
-            
-            files.writeFile("docsToIndex/doc"+numDocs+".txt", content);
+            //read stop words and replace then; 
+            removeStopWords();
+
+            files.writeFile("docsToIndex/" + titleDoc, content);
         }
 
     }
 
     private void removeStopWords() throws FileNotFoundException {
         ReadFiles stop = new ReadFiles();
-
         String[] stopWords = stop.getContentFile("stopwords.txt").toString().split("\n");
-
-        for (String stopsW1 : stopWords) {
-            System.out.println(stopsW1);
-//            System.out.println("["+stopsW1+"]");
-            stopsW1 = " "+ stopsW1+ " ";
+        //for each stop word, remove it from content file
+        for (String stopsW1 : stopWords) {//    
             content = content.replaceAll(stopsW1, " ");
-//            System.out.println(content);
         }
     }
 
     private void removeSpecialCharacters() {
         // remove special characters
         String text = Normalizer.normalize(content, Normalizer.Form.NFD);
-        text = text.replaceAll("[^\\p{ASCII}]", "");        
-
+        text = text.replaceAll("[^\\p{ASCII}]", "");
         // remove pontuation
         content = text.replaceAll("\\p{Punct}", " ");
-        content = content.replaceAll("\\s+"," ");
-        System.out.println(content);
+        content = content.replaceAll("\\s+", " ");
+
     }
+
+    
 
 }

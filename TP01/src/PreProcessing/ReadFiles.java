@@ -73,4 +73,9 @@ public class ReadFiles {
     }
 
     
+    public String pathToTitle(String file) {
+        String[] aux = file.split("/");
+        return aux[aux.length - 1];
+    }
+    
 }

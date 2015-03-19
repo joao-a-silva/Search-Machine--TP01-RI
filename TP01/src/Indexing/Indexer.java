@@ -29,6 +29,7 @@ public class Indexer {
         ReadFiles files = new ReadFiles();
 
         for (String s : files.listFiles(path)) {
+            String nameDoc = files.pathToTitle(s);
             System.out.println("Processing File: " + s);
 
             String contentFile = files.getContentFile(s).toString();
@@ -38,8 +39,7 @@ public class Indexer {
             while (terms.hasMoreTokens()) {
 
                 String term = terms.nextToken();
-                String nameDoc = "doc" + totalDocs;
-           
+                           
                 if (!index.containsKey(term)) {
                     HashMap<String, Documents> docs = new HashMap<>();
                     docs.put(nameDoc, new Documents(1));
@@ -63,6 +63,7 @@ public class Indexer {
     public String GeraWeights() {
 
         Set<String> keys = index.keySet();
+        Weight w = new Weight();
 
         for (String key : keys) {
 
@@ -70,13 +71,17 @@ public class Indexer {
                 Set<String> keyDocs = index.get(key).keySet();
 //                System.out.print(key+ "-");
                 int numDocsOcorr = index.get(key).size();
-//                System.out.println(numDocsOcorr);
+
                 for (String doc : keyDocs) {
                     if (doc != null) {
+                        //obtains file frequency
                         int freq = index.get(key).get(doc).getFreq();
-                        double tf = this.getTF(freq);
-                        double idf =this.getIDF(numDocsOcorr);
-                        double tfidf = this.getTFIDF(freq, tf, idf);
+                        //calculos of the tf weight
+                        double tf = w.getTF(freq);
+                        //calculus of the IDF weight
+                        double idf = w.getIDF(numDocsOcorr, totalDocs);
+                        //calculus of the TF-IDF weights
+                        double tfidf = w.getTFIDF(freq, tf, idf);
                         index.get(key).get(doc).setTF(tf);
                         index.get(key).get(doc).setIDF(idf);
 //                        System.out.println("Freq= "+ freq + "; TF = "+ index.get(key).get(doc).getTF()+"; ITF = "+
@@ -91,23 +96,5 @@ public class Indexer {
     }
 
     
-    public double getTF(int freq) {
-
-        if (freq > 0) {
-            return 1 + Math.log((double)freq) / Math.log(2.0);
-        } else {
-            return 0.0;
-        }
-    }
-
-    public double getIDF(int numDocsOcorr) {        
-        return Math.log((double)totalDocs /(double) numDocsOcorr) / Math.log(2.0);             
-    }
-
-    private double getTFIDF(int freq, double tf, double idf) {
-       if (freq > 0)
-           return tf * idf;
-       else
-           return 0.0;
-    }
+    
 }
