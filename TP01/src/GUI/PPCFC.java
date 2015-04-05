@@ -8,6 +8,7 @@ package GUI;
 import Indexing.Indexer;
 import PreProcessing.PreProcessing;
 import PreProcessing.PreProcessingCFC;
+import Ranking.Ranking;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,16 +29,16 @@ public class PPCFC extends javax.swing.JFrame {
     public PPCFC() {
         initComponents();
     }
-    
+
     private String getFile() {
-       
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.CANCEL_OPTION) {
             System.exit(1);
         }
-        
+
         File fileName = fileChooser.getSelectedFile();
         if ((fileName == null) || (fileName.getName().equals(""))) {
             JOptionPane.showMessageDialog(this, "Inavlid Dir Name",
@@ -60,6 +61,7 @@ public class PPCFC extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         pathDataBase = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,6 +88,13 @@ public class PPCFC extends javax.swing.JFrame {
 
         pathDataBase.setEditable(false);
 
+        jButton4.setText("Ranking");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,6 +102,9 @@ public class PPCFC extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pathDataBase)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -115,7 +127,9 @@ public class PPCFC extends javax.swing.JFrame {
                 .addComponent(jButton2)
                 .addGap(48, 48, 48)
                 .addComponent(jButton3)
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(jButton4)
+                .addContainerGap(164, Short.MAX_VALUE))
         );
 
         pack();
@@ -126,17 +140,15 @@ public class PPCFC extends javax.swing.JFrame {
         String path = this.getFile();
         this.pathDataBase.setText(path);
         PreProcessingCFC p = new PreProcessingCFC();
-        
+
         try {
             p.preProcessing(path);
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (IOException ex) {
             Logger.getLogger(PPCFC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -151,13 +163,31 @@ public class PPCFC extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        Indexer i = new Indexer();
+        Indexer i = null;
         try {
+            i = new Indexer();
             i.indexing("docsToIndex");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PPCFC.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        try {
+            // TODO add your handling code here:
+            Ranking r = new Ranking();
+            r.generateWeightsDocs();
+            r.generateWeightsQuery("What are the effects of calcium on the physical properties of mucus\n"
+                    + "   from CF patients?");
+            r.generateRank();
+            r.prinRank();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PPCFC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,6 +229,7 @@ public class PPCFC extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JTextField pathDataBase;
     // End of variables declaration//GEN-END:variables
 }

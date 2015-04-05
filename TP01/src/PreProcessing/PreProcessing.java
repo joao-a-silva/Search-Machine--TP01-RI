@@ -5,6 +5,7 @@
  */
 package PreProcessing;
 
+import Common.ReadFiles;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,10 +20,10 @@ import java.text.Normalizer;
 public class PreProcessing {
 
     String content, titleDoc;
-
+    ReadFiles stop = new ReadFiles();
+    
     public void preProcessing(String path) throws FileNotFoundException, IOException {
-        ReadFiles files = new ReadFiles();
-        StringBuilder out = new StringBuilder();
+        ReadFiles files = new ReadFiles();        
 
         for (String file : files.listFiles(path)) {
             titleDoc = files.pathToTitle(file);
@@ -30,21 +31,10 @@ public class PreProcessing {
             content = files.getContentFile(file).toString().toLowerCase();
             //remove special characters
             removeSpecialCharacters();
-            //read stop words and replace then; 
-            removeStopWords();
-
+            removeHTMLTags();
             files.writeFile("docsToIndex/" + titleDoc, content);
         }
 
-    }
-
-    private void removeStopWords() throws FileNotFoundException {
-        ReadFiles stop = new ReadFiles();
-        String[] stopWords = stop.getContentFile("stopwords.txt").toString().split("\n");
-        //for each stop word, remove it from content file
-        for (String stopsW1 : stopWords) {//    
-            content = content.replaceAll(stopsW1, " ");
-        }
     }
 
     private void removeSpecialCharacters() {
@@ -54,9 +44,10 @@ public class PreProcessing {
         // remove pontuation
         content = text.replaceAll("\\p{Punct}", " ");
         content = content.replaceAll("\\s+", " ");
-
     }
 
-    
+    private void removeHTMLTags() {
+       content = content.replaceAll("\\<.*?>","");
+    }
 
 }

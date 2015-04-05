@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import PreProcessing.ReadFiles;
+import Common.ReadFiles;
 import java.io.FileNotFoundException;
 import org.junit.After;
 import org.junit.AfterClass;

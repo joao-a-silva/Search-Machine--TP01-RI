@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package PreProcessing;
+package Common;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -71,7 +71,6 @@ public class ReadFiles {
         bw.close();
         fw.close();
     }
-
     
     public String pathToTitle(String file) {
         String[] aux = file.split("/");

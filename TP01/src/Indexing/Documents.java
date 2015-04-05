@@ -12,41 +12,39 @@ package Indexing;
  */
 public class Documents {
     
-    private int freq;
-    private double TF;
-    private double IDF;
+    private String name;
+    private double frqTF;
 
-    Documents(int i) {
-       this.freq = i;
+    Documents(String name) {
+        this.name = name;
+        this.frqTF = 1.0;
     }
 
-    public int getFreq() {
-        return freq;
+    public Documents(String name, double sim) {
+        this.name = name;
+        this.frqTF = sim;
     }
-
-    public void setFreq(int freq) {
-        this.freq = freq;
-    }    
-
-    public double getTF() {
-        return TF;
-    }
-
-    public void setTF(double TF) {
-        this.TF = TF;
-    }
-
-    public double getIDF() {
-        return IDF;
-    }
-
-    public void setIDF(double IDF) {
-        this.IDF = IDF;
-    }
-
     
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getFrqTF() {
+        return frqTF;
+    }
+
+    public void setFrqTF(double frqTF) {
+        this.frqTF = frqTF;
+    }
+
+//    @Override
+    public int compareTo(Documents d) {        
+        return (int) (this.frqTF - d.frqTF);
+    }
     
-    
-    
-    
+        
 }

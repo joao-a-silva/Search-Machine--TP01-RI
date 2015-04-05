@@ -12,22 +12,22 @@ package Indexing;
 public class Weight {
     
     // Calculus the TF
-    public double getTF(int freq) {
+    public double getTF(double freq) {
         if (freq > 0) {
-            return 1 + Math.log((double)freq) / Math.log(2.0);
+            return 1 + Math.log(freq) / Math.log(2.0);
         } else {
             return 0.0;
         }
     }
 
     // Calculus the IDF
-    public double getIDF(int numDocsOcorr, int totalDocs) {        
+    public double getIDF(int totalDocs, int numDocsOcorr) {        
         return Math.log((double)totalDocs /(double) numDocsOcorr) / Math.log(2.0);             
     }
 
     //Caucuslus the TF-IDF
-    public double getTFIDF(int freq, double tf, double idf) {
-       if (freq > 0)
+    public double getTFIDF(double tf, double idf) {
+       if (tf > 0)
            return tf * idf;
        else
            return 0.0;

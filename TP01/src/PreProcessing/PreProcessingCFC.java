@@ -5,6 +5,7 @@
  */
 package PreProcessing;
 
+import Common.ReadFiles;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public class PreProcessingCFC {
 
-    String titleDoc;
+    String nomeDoc;
 
     public void preProcessing(String path) throws FileNotFoundException, IOException {
 
@@ -33,10 +34,13 @@ public class PreProcessingCFC {
             for (int i = 0; i < paper.length; i++) {
                 StringBuilder out = new StringBuilder();
                
-                initTitle = paper[i].indexOf("\nTI ");
-                endTitle = paper[i].indexOf("\nSO ");
+                initTitle = paper[i].indexOf("\nRN ");
+
+                endTitle = paper[i].indexOf("\nAN ");
+//                
 //                System.out.println(paper[i].substring(initTitle, endTitle));
-                titleDoc = paper[i].substring(initTitle+3, endTitle).replaceAll("\\.", "");
+                nomeDoc = paper[i].substring(initTitle+3, endTitle).replaceAll("\\.", "");
+                System.out.println(nomeDoc);
                 if (paper[i].indexOf("\nAU ") > 0) {
                     init = paper[i].indexOf("\nAU ");
                 } else {
@@ -51,7 +55,7 @@ public class PreProcessingCFC {
 //                System.out.println(end);
                 out.append(paper[i].substring(init, end));
 
-                files.writeFile("docs/" + titleDoc + ".txt", out.toString());
+                files.writeFile("docs/" + nomeDoc + ".txt", out.toString().replaceAll("\nAU |\nTI |\nSO |\nMJ |\nMN |\nAB |\nEX ", " " ));
             }
 
         }
