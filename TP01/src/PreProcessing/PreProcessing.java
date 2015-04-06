@@ -26,7 +26,12 @@ public class PreProcessing {
         ReadFiles files = new ReadFiles();        
         int numFile = 0;
         for (String file : files.listFiles(path)) {
-            titleDoc = files.pathToTitle(file);
+            titleDoc = files.pathToTitle(file).replace(".txt", "").replaceAll("\\s+", "");
+            int auxTitleDoc = Integer.parseInt(titleDoc);
+            titleDoc = auxTitleDoc+".txt";
+//            System.out.println(titleDoc);
+            
+            
             //read content file
             content = files.getContentFile(file).toString().toLowerCase();
             //remove special characters

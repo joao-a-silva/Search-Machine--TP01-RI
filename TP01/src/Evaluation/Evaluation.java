@@ -68,15 +68,13 @@ public class Evaluation {
             sizeRank++;
 
         }
-
+//        for (int i = 0; i < recalPrecision.size(); i++) {
+//            System.out.println(recalPrecision.get(i)[0]);
+//            System.out.println(recalPrecision.get(i)[1]);
+//            System.out.println("");
+//
+//        }
         generateInterpolation(recalPrecision);
-
-        for (int i = 0; i < recalPrecision.size(); i++) {
-            System.out.println(recalPrecision.get(i)[0]);
-            System.out.println(recalPrecision.get(i)[1]);
-            System.out.println("");
-
-        }
 
     }
 
@@ -97,41 +95,51 @@ public class Evaluation {
         Double[][] recPrec = new Double[11][2];
 
         recPrec[0][0] = 0.0;
-        recPrec[0][1] = recalPrecision.get(0)[1];
 
-        if (recalPrecision.get(recalPrecision.size() - 1)[0] != 100.0) {
-            int i = 0;
-            for (; i < recalPrecision.size(); i++) {
-                recPrec[i + 1][0] = recalPrecision.get(i)[0];
-                recPrec[i + 1][1] = recalPrecision.get(i)[1];
-            }
-            if (i < 11) {
+        double maxPrecision;
+        int i = 0;
+        int j = 1;
+        for (; j < recPrec.length; j++) {
+            maxPrecision = recalPrecision.get(i)[1];
+
+            while ( recalPrecision.get(i)[0] < j * 10.0  && i < recalPrecision.size() - 1) {
+                if (recalPrecision.get(i)[1] > maxPrecision) {
+                    maxPrecision = recalPrecision.get(i)[1];
+                }
                 i++;
-                for (; i < recPrec.length; i++) {
-                    recPrec[i][0] = i * 10.0;
-                    recPrec[i][1] = 0.0;
-                }
             }
-        } else {
-            int auxj = 1;
-            for (int i = 0; i < recalPrecision.size(); i++) {
-                
-                while(auxj*10.0 <= recalPrecision.get(i)[0]){
-                    recPrec[auxj][0] = auxj*10.0;
-                    recPrec[auxj][1] = recalPrecision.get(i)[1];
-                    auxj++;
-                }
-                
-                
+
+            if (recalPrecision.get(i)[1] > maxPrecision) {
+                maxPrecision = recalPrecision.get(i)[1];
+            }
+            recPrec[j][0] = recalPrecision.get(i)[0];
+            recPrec[j][1] = maxPrecision;
+
+            if(i >= recalPrecision.size()-1){
+                break;
             }
 
         }
-        
-        for (int i = 0; i < recPrec.length; i++) {
-            System.out.println(recPrec[i][0]+" -> "+ recPrec[i][1]);
-            
-        }
+        recPrec[0][1] = recPrec[1][1];
 
+//        if (recalPrecision.get(recalPrecision.size() - 1)[0] != 100.0) {
+//            int i = 0;
+//            for (; i < recalPrecision.size(); i++) {
+//                recPrec[i + 1][0] = recalPrecision.get(i)[0];
+//                recPrec[i + 1][1] = recalPrecision.get(i)[1];
+//            }
+//            if (i < 11) {
+//                i++;
+//                for (; i < recPrec.length; i++) {
+//                    recPrec[i][0] = i * 10.0;
+//                    recPrec[i][1] = 0.0;
+//                }
+//            }
+//        } else {
+//        }
+        for (Double[] recPrec1 : recPrec) {
+            System.out.println(recPrec1[0] + " -> " + recPrec1[1]);
+        }
     }
 
 }

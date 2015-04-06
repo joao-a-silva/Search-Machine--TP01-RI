@@ -54,7 +54,7 @@ public class NewMain {
         
         Evaluation e = new Evaluation();
         
-//        e.evaluatonquery(res, relevant);
+        e.evaluationquery(res, relevant);
         
         TreeSet<Results> res2 = new TreeSet<Results>();
         res2.add(new Results("d425", 1));
@@ -79,7 +79,7 @@ public class NewMain {
         relevant2.add("d129");
         System.out.println("\n\n");
         
-//        e.evaluatonquery(res2, relevant2);
+        e.evaluationquery(res2, relevant2);
                 
     }
     
