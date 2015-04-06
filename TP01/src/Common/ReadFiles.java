@@ -62,7 +62,7 @@ public class ReadFiles {
 
         File arquivo = new File(path);
         //escreve no arquivo
-        FileWriter fw = new FileWriter(arquivo, true);
+        FileWriter fw = new FileWriter(arquivo, false);
         BufferedWriter bw = new BufferedWriter(fw);
 
         bw.write(out);

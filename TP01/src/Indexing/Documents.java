@@ -41,10 +41,6 @@ public class Documents {
         this.frqTF = frqTF;
     }
 
-//    @Override
-    public int compareTo(Documents d) {        
-        return (int) (this.frqTF - d.frqTF);
-    }
-    
+
         
 }

@@ -24,7 +24,7 @@ public class PreProcessing {
     
     public void preProcessing(String path) throws FileNotFoundException, IOException {
         ReadFiles files = new ReadFiles();        
-
+        int numFile = 0;
         for (String file : files.listFiles(path)) {
             titleDoc = files.pathToTitle(file);
             //read content file
@@ -33,6 +33,7 @@ public class PreProcessing {
             removeSpecialCharacters();
             removeHTMLTags();
             files.writeFile("docsToIndex/" + titleDoc, content);
+            numFile++;
         }
 
     }
