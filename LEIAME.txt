@@ -1,0 +1,6 @@
+Execução do Trabalho
+
+-> Executar o jar disponível em: Search-Machine--TP01-RI/TP01/dist
+-> Buscar pelo botão "Documents" por um diretório que contenha SOMENTE os arquivos originais a serem processados da base CFC (Sem o arquivo com as querys a serem avaliadas).
+-> Indexar os arquivos com o botão Indexing.
+-> Após a indexação, submeter as querys para avaliação de eficiência do Modelo Vetorial. Pelo botão Evaluation, selecione o arquivo de querys original da coleção CFC. A partir daí o programa gerará o ranking para cada query, calculará as precisões nos níveis de revoação e exibirá a precisão média em cada um dos níveis ao final da execução.
